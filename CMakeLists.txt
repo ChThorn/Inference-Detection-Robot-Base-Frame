@@ -16,6 +16,7 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 set(SOURCE_FILES 
     src/main.cpp
     src/YoloDetector.cpp
+    src/TransformMatrixCamToRobot.cpp
 )
 
 # Create executable
