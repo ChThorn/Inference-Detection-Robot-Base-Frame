@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/main.dir/src/TransformMatrixCamToRobot.cpp.o"
+  "CMakeFiles/main.dir/src/TransformMatrixCamToRobot.cpp.o.d"
   "CMakeFiles/main.dir/src/YoloDetector.cpp.o"
   "CMakeFiles/main.dir/src/YoloDetector.cpp.o.d"
   "CMakeFiles/main.dir/src/main.cpp.o"

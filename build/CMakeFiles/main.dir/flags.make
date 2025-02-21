@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = -DELPP_NO_DEFAULT_LOG_FILE
 
-CXX_INCLUDES = -I/home/thornch/Documents/Cpp/camera_preparation/detection_based_3d_individualObject/include -isystem /usr/local/include/opencv4 -isystem /usr/include/eigen3
+CXX_INCLUDES = -I/home/thornch/Documents/Cpp/camera_preparation/Inference-Detection-Robot-Base-Frame/include -isystem /usr/local/include/opencv4 -isystem /usr/include/eigen3
 
 CXX_FLAGS = 
 

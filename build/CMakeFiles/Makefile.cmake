@@ -7,7 +7,7 @@ set(CMAKE_DEPENDS_GENERATOR "Unix Makefiles")
 # The top level Makefile was generated from the following files:
 set(CMAKE_MAKEFILE_DEPENDS
   "CMakeCache.txt"
-  "/home/thornch/Documents/Cpp/camera_preparation/detection_based_3d_individualObject/CMakeLists.txt"
+  "/home/thornch/Documents/Cpp/camera_preparation/Inference-Detection-Robot-Base-Frame/CMakeLists.txt"
   "CMakeFiles/3.31.2/CMakeCCompiler.cmake"
   "CMakeFiles/3.31.2/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.31.2/CMakeSystem.cmake"
