@@ -107,6 +107,24 @@ void YoloDetector::postprocess(cv::Mat& frame, const std::vector<cv::Mat>& outpu
     for (const int idx : indices) {
         GraspPose pose;
         pose.bbox = boxes[idx];
+
+        // Calculate object angle from bounding box
+        float angle = 0;
+        if (pose.bbox.width > pose.bbox.height) {
+            angle = 0;  // horizontal grasp
+        } else {
+            angle = M_PI/2;  // vertical grasp
+        }
+        pose.object_angle = angle;
+
+        // Create gripper orientation matrix (top-down grasp)
+        Eigen::Matrix3d grip_orientation;
+        grip_orientation << cos(angle), -sin(angle), 0,     // X axis
+                           sin(angle),  cos(angle), 0,      // Y axis
+                                   0,          0, -1;       // Z axis points down
+
+        pose.orientation = grip_orientation;
+
         pose.confidence = confidences[idx];
         pose.grasp_point = cv::Point(
             pose.bbox.x + pose.bbox.width * grasp_point_x_ratio_,

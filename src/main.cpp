@@ -167,7 +167,17 @@ int main(int argc, char** argv) {
                      << grasp.position_cam.transpose() << "\n"
                      << "  Robot frame position (m): "
                      << grasp.position_robot.transpose() << "\n"
-                     << "  Confidence: " << grasp.confidence << "\n\n";
+                     << "  Confidence: " << grasp.confidence << "\n"
+                     << "  Orientation matrix:\n" 
+                     << grasp.orientation << std::endl;
+
+            // For visualization, draw orientation
+            cv::Point center(grasp.bbox.x + grasp.bbox.width/2, 
+                            grasp.bbox.y + grasp.bbox.height/2);
+            cv::Point direction(30 * cos(grasp.object_angle), 
+                            30 * sin(grasp.object_angle));
+            cv::arrowedLine(result, center, center + direction, 
+                            cv::Scalar(0, 255, 0), 2);
         }
 
         // Display images and wait for key press

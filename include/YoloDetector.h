@@ -9,9 +9,11 @@
 struct GraspPose {
     Eigen::Vector3d position_cam;     // Position in camera frame (meters)
     Eigen::Vector3d position_robot;   // Position in robot base frame (meters)
+    Eigen::Matrix3d orientation;      // Rotation matrix for gripper orientation
     cv::Rect bbox;                    // Object bounding box
     cv::Point grasp_point;            // Preferred grasp location in image
     float confidence;                 // Detection confidence (0-1)
+    float object_angle;
 };
 
 class YoloDetector {
