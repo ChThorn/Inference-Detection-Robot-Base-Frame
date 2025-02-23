@@ -25,7 +25,7 @@ public:
                  float confidence_thresh = 0.5,
                  float nms_thresh = 0.4,
                  cv::Size network_input_size = {416, 416},
-                 float grasp_point_x_ratio = 0.6);
+                 float grasp_point_x_ratio = 1.0);
 
     cv::Mat detect(const cv::Mat& color_frame, const cv::Mat& depth_frame);
     const std::vector<GraspPose>& get_detections() const { return detections_; }
