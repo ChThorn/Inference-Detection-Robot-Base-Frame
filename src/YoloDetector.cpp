@@ -346,6 +346,10 @@ void YoloDetector::postprocess(cv::Mat& frame, const std::vector<cv::Mat>& outpu
         int grasp_x = pose.bbox.x + static_cast<int>(pose.bbox.width * grasp_point_x_ratio_);
         int grasp_y = pose.bbox.y + pose.bbox.height / 2;
         pose.grasp_point = cv::Point(grasp_x, grasp_y);
+
+        // Clamp to image dimensions to avoid invalid pixels
+        // grasp_x = std::clamp(grasp_x, 0, frame.cols - 1); 
+        // pose.grasp_point = cv::Point(grasp_x, pose.bbox.y + pose.bbox.height / 2);
         
         // Calculate orientation using PCA on a simple mask
         cv::Mat mask = cv::Mat::zeros(frame.size(), CV_8UC1);

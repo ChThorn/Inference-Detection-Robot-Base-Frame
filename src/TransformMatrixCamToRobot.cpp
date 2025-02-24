@@ -55,30 +55,68 @@ bool TransformMatrixCamToRobot::loadMatrixFromYAML(
     return !mat.empty();
 }
 
+// Eigen::Vector3d TransformMatrixCamToRobot::pixelToCamera(
+//     const cv::Point& pixel, float depth) const {
+//     std::vector<cv::Point2f> distorted{pixel};
+//     std::vector<cv::Point2f> undistorted;
+    
+//     cv::undistortPoints(distorted, undistorted, 
+//                        params_.camera_matrix, 
+//                        params_.dist_coeffs,
+//                        cv::noArray(), params_.camera_matrix); // Ensure correct projection
+    
+//     return Eigen::Vector3d(
+//         undistorted[0].x * depth,
+//         undistorted[0].y * depth,
+//         depth
+//     );
+// }
+
 Eigen::Vector3d TransformMatrixCamToRobot::pixelToCamera(
-    const cv::Point& pixel, float depth) const {
+    const cv::Point& pixel, float depth) const 
+{
     std::vector<cv::Point2f> distorted{pixel};
     std::vector<cv::Point2f> undistorted;
-    
-    cv::undistortPoints(distorted, undistorted, 
-                       params_.camera_matrix, 
-                       params_.dist_coeffs,
-                       cv::noArray(), params_.camera_matrix); // Ensure correct projection
-    
+
+    // Use identity matrix to get normalized coordinates
+    cv::Mat identity_matrix = cv::Mat::eye(3, 3, CV_64F);
+    cv::undistortPoints(
+        distorted, 
+        undistorted, 
+        params_.camera_matrix, 
+        params_.dist_coeffs,
+        cv::noArray(),    // No rectification
+        identity_matrix   // Output normalized coordinates (metric)
+    );
+
+    // Normalized coordinates are (x', y') = ((u - cx)/fx, (v - cy)/fy)
+    // Multiply by depth to get 3D point in camera frame
     return Eigen::Vector3d(
-        undistorted[0].x * depth,
-        undistorted[0].y * depth,
-        depth
+        undistorted[0].x * depth,  // X = x' * Z (meters)
+        undistorted[0].y * depth,  // Y = y' * Z (meters)
+        depth                      // Z = depth (meters)
     );
 }
 
-Eigen::Vector3d TransformMatrixCamToRobot::transformToRobot(
-    const Eigen::Vector3d& point_cam) const {
+// camera_T_robot_base (transformation from camera to robot base)
+// Eigen::Vector3d TransformMatrixCamToRobot::transformToRobot(
+//     const Eigen::Vector3d& point_cam) const {
+//     if (!is_extrinsic_valid_) {
+//         throw std::runtime_error("Extrinsic matrix is invalid");
+//     }
+//     const Eigen::Vector4d cam_homog(point_cam.x(), point_cam.y(), point_cam.z(), 1.0);
+//     const Eigen::Vector4d robot_homog = params_.extrinsic * cam_homog;
+//     return robot_homog.head<3>() / robot_homog.w();
+// }
+
+// robot_base_T_camera (transformation from robot base to camera)
+Eigen::Vector3d TransformMatrixCamToRobot::transformToRobot(const Eigen::Vector3d& point_cam) const {
     if (!is_extrinsic_valid_) {
         throw std::runtime_error("Extrinsic matrix is invalid");
     }
     const Eigen::Vector4d cam_homog(point_cam.x(), point_cam.y(), point_cam.z(), 1.0);
-    const Eigen::Vector4d robot_homog = params_.extrinsic * cam_homog;
+    // Use inverse of extrinsic matrix
+    const Eigen::Vector4d robot_homog = params_.extrinsic.inverse() * cam_homog;
     return robot_homog.head<3>() / robot_homog.w();
 }
 

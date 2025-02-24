@@ -64,7 +64,7 @@ int main(int argc, char** argv) {
             cv::Point center(grasp.bbox.x + grasp.bbox.width/2, 
                             grasp.bbox.y + grasp.bbox.height/2);
             cv::Point direction(50 * cos(grasp.object_angle), 
-                              50 * sin(grasp.object_angle));
+                              50 * sin(grasp.object_angle)); // x-axis from left to right
             // cv::arrowedLine(result, center, center + direction, 
             //               cv::Scalar(0, 255, 0), 2);
         }
